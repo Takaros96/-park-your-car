@@ -1,29 +1,20 @@
-const config = require("../config/db.config.js");
+import 'bootstrap/dist/css/bootstrap.css';
+import React from 'react';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import App from './App';
+import * as serviceWorkerRegistration from './serviceWorkerRegistration';
 
-const Sequelize = require("sequelize");
-const sequelize = new Sequelize(
-  config.DB,
-  config.USER,
-  config.PASSWORD,
-  {
-    host: config.HOST,
-    dialect: config.dialect,
-    operatorsAliases: false,
+const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href');
+const rootElement = document.getElementById('root');
+const root = createRoot(rootElement);
 
-    pool: {
-      max: config.pool.max,
-      min: config.pool.min,
-      acquire: config.pool.acquire,
-      idle: config.pool.idle
-    }
-  }
-);
+root.render(
+  <BrowserRouter basename={baseUrl}>
+    <App />
+  </BrowserRouter>);
 
-const db = {};
-
-db.Sequelize = Sequelize;
-db.sequelize = sequelize;
-
-db.user = require("../models/user.model.js")(sequelize, Sequelize);
-
-module.exports = db;
+// If you want your app to work offline and load faster, you can change
+// unregister() to register() below. Note this comes with some pitfalls.
+// Learn more about service workers: https://cra.link/PWA
+serviceWorkerRegistration.unregister();
